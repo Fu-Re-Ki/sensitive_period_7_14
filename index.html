@@ -1,0 +1,1166 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Окна возможностей — нейронаука для родителей</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,300;1,9..144,600;1,9..144,700&family=Cabinet+Grotesk:wght@300;400;500;700&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:          #100e0b;
+  --bg2:         #161310;
+  --bg3:         #1e1a14;
+  --bg4:         #252018;
+  --text:        #c8bca8;
+  --text-bright: #ede5d4;
+  --text-dim:    #5e5444;
+  --amber:       #e8a838;
+  --amber-dim:   rgba(232,168,56,0.12);
+  --amber-glow:  rgba(232,168,56,0.22);
+  --coral:       #d4583c;
+  --coral-dim:   rgba(212,88,60,0.12);
+  --sage:        #8ab878;
+  --sage-dim:    rgba(138,184,120,0.1);
+  --border:      rgba(232,168,56,0.1);
+  --border2:     rgba(232,168,56,0.2);
+  --muted:       #5e5444;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Cabinet Grotesk', sans-serif;
+  font-size: 17px;
+  line-height: 1.75;
+  overflow-x: hidden;
+}
+
+/* SUBTLE TEXTURE */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    radial-gradient(ellipse 80% 50% at 20% 40%, rgba(232,168,56,0.04) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 60% at 80% 60%, rgba(212,88,60,0.03) 0%, transparent 60%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* NAV */
+.site-header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 20px 52px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: background 0.4s, border-bottom 0.4s;
+}
+.site-header.scrolled {
+  background: rgba(16,14,11,0.94);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+}
+.site-logo {
+  font-family: 'Fraunces', serif;
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--amber);
+  letter-spacing: 0.3px;
+}
+.site-logo span { color: var(--text-dim); font-weight: 300; }
+.site-nav { display: flex; gap: 36px; list-style: none; }
+.site-nav a {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  color: var(--text-dim);
+  text-decoration: none;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  transition: color 0.25s;
+}
+.site-nav a:hover { color: var(--amber); }
+
+/* ── HERO ── */
+.hero {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.hero-left {
+  background: var(--bg3);
+  padding: 100px 60px 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  z-index: 2;
+  border-right: 1px solid var(--border);
+}
+
+/* diagonal divider */
+.hero-left::after {
+  content: '';
+  position: absolute;
+  right: -56px;
+  top: 0; bottom: 0;
+  width: 112px;
+  background: var(--bg3);
+  clip-path: polygon(0 0, 38% 0, 100% 50%, 38% 100%, 0 100%);
+  z-index: 3;
+}
+
+.hero-right {
+  background: var(--bg4);
+  position: relative;
+  overflow: hidden;
+}
+/* grid lines on right panel */
+.hero-right::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(232,168,56,0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(232,168,56,0.04) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+.hero-right-inner {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.brain-visual {
+  width: 360px; height: 360px;
+  animation: float 7s ease-in-out infinite;
+}
+@keyframes float {
+  0%,100% { transform: translateY(0); }
+  50%      { transform: translateY(-14px); }
+}
+
+/* hero text */
+.hero-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--amber);
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  margin-bottom: 28px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.hero-tag::before {
+  content: '';
+  width: 20px; height: 1px;
+  background: var(--amber);
+  display: inline-block;
+}
+
+.hero-title {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(48px, 5.5vw, 76px);
+  font-weight: 700;
+  line-height: 1.0;
+  color: var(--text-bright);
+  margin-bottom: 10px;
+  letter-spacing: -1px;
+}
+.hero-title em {
+  font-style: italic;
+  font-weight: 300;
+  color: var(--amber);
+}
+
+.hero-subtitle {
+  font-family: 'Cabinet Grotesk', sans-serif;
+  font-size: 16px;
+  font-weight: 300;
+  color: var(--text-dim);
+  max-width: 380px;
+  margin-bottom: 52px;
+  line-height: 1.8;
+}
+
+.hero-stats {
+  display: flex;
+  gap: 32px;
+  margin-bottom: 52px;
+}
+.hero-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.hero-stat-n {
+  font-family: 'Fraunces', serif;
+  font-size: 28px;
+  font-weight: 600;
+  color: var(--text-bright);
+  line-height: 1;
+}
+.hero-stat-l {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  color: var(--text-dim);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+.hero-stat-sep { width: 1px; background: var(--border2); align-self: stretch; }
+
+.hero-scroll {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  color: var(--text-dim);
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+.hero-scroll:hover { color: var(--amber); }
+.scroll-line {
+  width: 40px; height: 1px;
+  background: var(--border2);
+  position: relative;
+  overflow: hidden;
+}
+.scroll-line::after {
+  content: '';
+  position: absolute;
+  left: -100%; top: 0;
+  width: 100%; height: 100%;
+  background: var(--amber);
+  animation: slide-r 2s ease-in-out infinite;
+}
+@keyframes slide-r { 0%{left:-100%} 100%{left:100%} }
+
+/* ── TICKER ── */
+.ticker-wrap {
+  background: var(--bg2);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 0;
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+}
+.ticker {
+  display: flex;
+  gap: 56px;
+  white-space: nowrap;
+  animation: ticker 30s linear infinite;
+}
+@keyframes ticker { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+.ticker-item {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--text-dim);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.ticker-item::after { content: '◆'; color: var(--amber); font-size: 5px; }
+
+/* ── INTRO BAND ── */
+.intro-band {
+  background: var(--bg2);
+  border-bottom: 1px solid var(--border);
+  padding: 80px 0;
+  position: relative;
+  z-index: 1;
+}
+.intro-band-inner {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 52px;
+}
+.big-quote {
+  font-family: 'Fraunces', serif;
+  font-size: clamp(22px, 3vw, 34px);
+  font-weight: 300;
+  font-style: italic;
+  color: var(--text-bright);
+  line-height: 1.45;
+  padding-left: 32px;
+  position: relative;
+}
+.big-quote::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 6px; bottom: 6px;
+  width: 2px;
+  background: var(--amber);
+}
+
+/* ── CONTENT ── */
+.section { padding: 80px 0; position: relative; z-index: 1; }
+.container { max-width: 860px; margin: 0 auto; padding: 0 52px; }
+
+.sec-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--amber);
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.sec-label::before { content:''; width:14px; height:1px; background:var(--amber); }
+
+.section-title {
+  font-family: 'Fraunces', serif;
+  font-size: 34px;
+  font-weight: 600;
+  color: var(--text-bright);
+  margin-bottom: 24px;
+  line-height: 1.2;
+  letter-spacing: -0.3px;
+}
+
+p.lead {
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--text);
+  margin-bottom: 20px;
+  line-height: 1.85;
+}
+p.body-text {
+  font-size: 16px;
+  color: var(--text);
+  margin-bottom: 18px;
+  line-height: 1.85;
+}
+p.body-text strong { color: var(--text-bright); font-weight: 500; }
+
+/* CALLOUT */
+.callout {
+  background: var(--bg3);
+  border-left: 3px solid var(--amber);
+  padding: 24px 28px;
+  margin: 40px 0;
+}
+.callout-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  color: var(--amber);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.callout p { font-size: 15px; color: var(--text); line-height: 1.8; }
+
+/* PERIOD BLOCKS */
+.period-block { margin: 64px 0; }
+
+.period-header {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-top: 2px solid var(--amber);
+  padding: 32px 36px;
+  border-radius: 2px;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 0;
+}
+.period-header::before {
+  content: attr(data-num);
+  position: absolute;
+  right: 28px; top: 50%;
+  transform: translateY(-50%);
+  font-family: 'Fraunces', serif;
+  font-size: 110px;
+  font-weight: 700;
+  color: rgba(232,168,56,0.06);
+  line-height: 1;
+  pointer-events: none;
+  letter-spacing: -4px;
+}
+.period-age {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--amber);
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.period-age::before {
+  content: '';
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--amber);
+  box-shadow: 0 0 8px var(--amber);
+}
+.period-title {
+  font-family: 'Fraunces', serif;
+  font-size: 30px;
+  font-weight: 600;
+  color: var(--text-bright);
+  margin-bottom: 6px;
+  letter-spacing: -0.3px;
+}
+.period-sub {
+  font-size: 14px;
+  color: var(--text-dim);
+  font-style: italic;
+  font-family: 'Cabinet Grotesk', sans-serif;
+}
+
+/* STATUS BARS */
+.brain-status {
+  display: flex;
+  gap: 0;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-top: none;
+  padding: 20px 28px;
+  margin-bottom: 0;
+}
+.status-item {
+  flex: 1;
+  padding: 0 16px;
+  border-right: 1px solid var(--border);
+}
+.status-item:first-child { padding-left: 0; }
+.status-item:last-child { border-right: none; }
+.status-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  color: var(--text-dim);
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 7px;
+}
+.status-bar {
+  height: 2px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 1px;
+  overflow: hidden;
+  margin-bottom: 6px;
+}
+.status-fill {
+  height: 100%;
+  border-radius: 1px;
+  transition: width 1.2s cubic-bezier(0.4,0,0.2,1);
+}
+.status-fill.a { background: var(--amber); }
+.status-fill.c { background: var(--coral); }
+.status-fill.s { background: var(--sage); }
+.status-val {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  color: var(--text);
+}
+
+/* PERIOD BODY */
+.period-body {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-top: none;
+  padding: 36px 36px 40px;
+}
+
+.sub-heading {
+  font-family: 'Fraunces', serif;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--amber);
+  margin: 36px 0 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+}
+.sub-heading:first-child { margin-top: 0; }
+
+.develop-item {
+  margin: 24px 0;
+  padding-left: 18px;
+  border-left: 2px solid var(--border2);
+  transition: border-left-color 0.3s;
+}
+.develop-item:hover { border-left-color: var(--amber); }
+
+.develop-title {
+  font-family: 'Cabinet Grotesk', sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  color: var(--text-bright);
+  margin-bottom: 10px;
+}
+.develop-body {
+  font-size: 15px;
+  color: var(--text);
+  line-height: 1.85;
+  margin-bottom: 14px;
+}
+
+.action-box {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  padding: 14px 18px;
+  font-size: 14px;
+  color: var(--text-dim);
+  line-height: 1.75;
+}
+.action-box strong { color: var(--amber); font-weight: 500; }
+
+/* PRACTICE BOX */
+.practice-box {
+  background: var(--amber);
+  padding: 28px 32px;
+  margin-top: 32px;
+  position: relative;
+  overflow: hidden;
+}
+.practice-box::before {
+  content: '✦';
+  position: absolute;
+  right: 20px; top: 16px;
+  font-size: 44px;
+  color: rgba(0,0,0,0.1);
+}
+.practice-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(16,14,11,0.6);
+  margin-bottom: 10px;
+}
+.practice-box p {
+  font-size: 15px;
+  color: #100e0b;
+  line-height: 1.75;
+  font-weight: 500;
+}
+
+/* PULL QUOTE */
+.pull-quote {
+  font-family: 'Fraunces', serif;
+  font-size: 20px;
+  font-style: italic;
+  font-weight: 300;
+  color: var(--text-bright);
+  padding: 20px 28px;
+  border-left: 2px solid var(--coral);
+  background: var(--bg3);
+  margin: 28px 0;
+  line-height: 1.5;
+}
+
+/* ── PILLARS ── */
+.pillars-section {
+  background: var(--bg2);
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  padding: 100px 0;
+  position: relative;
+  z-index: 1;
+}
+.pillars-head { margin-bottom: 52px; }
+.pillars-head h2 {
+  font-family: 'Fraunces', serif;
+  font-size: 34px;
+  font-weight: 600;
+  color: var(--text-bright);
+  margin-bottom: 12px;
+  letter-spacing: -0.3px;
+}
+.pillars-head p { font-size: 15px; color: var(--text-dim); max-width: 560px; }
+
+.pillars-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.pillar-card {
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  padding: 28px;
+  transition: border-color 0.3s, transform 0.3s;
+  cursor: default;
+  position: relative;
+  overflow: hidden;
+}
+.pillar-card:hover {
+  border-color: var(--border2);
+  transform: translateY(-3px);
+}
+.pillar-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--amber), transparent);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.pillar-card:hover::after { opacity: 1; }
+.pillar-num {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  color: var(--text-dim);
+  letter-spacing: 2px;
+  margin-bottom: 14px;
+}
+.pillar-title {
+  font-family: 'Fraunces', serif;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-bright);
+  margin-bottom: 6px;
+  letter-spacing: -0.2px;
+}
+.pillar-dose {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  color: var(--amber);
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+}
+.pillar-text { font-size: 14px; color: var(--text-dim); line-height: 1.8; }
+
+/* ── CONCLUSION ── */
+.conclusion { padding: 100px 0; position: relative; z-index: 1; }
+.conclusion h2 {
+  font-family: 'Fraunces', serif;
+  font-size: 34px;
+  font-weight: 600;
+  color: var(--text-bright);
+  margin-bottom: 28px;
+  letter-spacing: -0.3px;
+}
+.conclusion p { font-size: 16px; margin-bottom: 20px; line-height: 1.85; }
+
+.final-quote {
+  margin-top: 52px;
+  padding: 36px 44px;
+  background: var(--bg3);
+  border: 1px solid var(--border2);
+  position: relative;
+  overflow: hidden;
+}
+.final-quote::before {
+  content: '"';
+  position: absolute;
+  left: 20px; top: -16px;
+  font-family: 'Fraunces', serif;
+  font-size: 120px;
+  color: rgba(232,168,56,0.1);
+  line-height: 1;
+  pointer-events: none;
+}
+.final-quote p {
+  font-family: 'Fraunces', serif;
+  font-size: 24px;
+  font-weight: 300;
+  font-style: italic;
+  color: var(--text-bright);
+  line-height: 1.5;
+  margin: 0;
+  position: relative;
+}
+.final-quote p span { color: var(--amber); font-style: normal; font-weight: 600; }
+
+/* ── SOURCES ── */
+.sources {
+  background: var(--bg2);
+  border-top: 1px solid var(--border);
+  padding: 56px 0;
+  position: relative;
+  z-index: 1;
+}
+.src-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  color: var(--text-dim);
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+.src-list { list-style: none; }
+.src-list li {
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  color: var(--text-dim);
+  padding: 9px 0;
+  border-bottom: 1px solid var(--border);
+  line-height: 1.65;
+}
+.src-list li:last-child { border-bottom: none; }
+
+/* REVEAL */
+.reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.65s, transform 0.65s; }
+.reveal.visible { opacity: 1; transform: none; }
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .site-header { padding: 16px 24px; }
+  .site-nav { display: none; }
+  .hero { grid-template-columns: 1fr; min-height: auto; }
+  .hero-left { padding: 110px 28px 56px; }
+  .hero-left::after { display: none; }
+  .hero-right { height: 280px; }
+  .brain-visual { width: 220px; height: 220px; }
+  .container, .intro-band-inner, .pillars-inner { padding: 0 24px; }
+  .pillars-grid { grid-template-columns: 1fr; }
+  .period-body { padding: 24px 20px; }
+  .brain-status { flex-wrap: wrap; gap: 12px; }
+  .status-item { border-right: none; padding: 0; }
+  .final-quote { padding: 24px 20px; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<header class="site-header" id="siteHeader">
+  <div class="site-logo">neuro<span>·</span>parent</div>
+  <nav><ul class="site-nav">
+    <li><a href="#age1">7–10</a></li>
+    <li><a href="#age2">10–12</a></li>
+    <li><a href="#age3">12–14</a></li>
+    <li><a href="#pillars">Протокол</a></li>
+  </ul></nav>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <p class="hero-tag">Нейробиология развития · 2026</p>
+    <h1 class="hero-title">Окна<br><em>возможностей</em></h1>
+    <p class="hero-subtitle">Мозг ребёнка 7–14 лет. Что происходит внутри — и что делать родителям.</p>
+
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <span class="hero-stat-n">3</span>
+        <span class="hero-stat-l">Периода</span>
+      </div>
+      <div class="hero-stat-sep"></div>
+      <div class="hero-stat">
+        <span class="hero-stat-n">×100</span>
+        <span class="hero-stat-l">Скорость миелина</span>
+      </div>
+      <div class="hero-stat-sep"></div>
+      <div class="hero-stat">
+        <span class="hero-stat-n">25</span>
+        <span class="hero-stat-l">Лет созревания ПФК</span>
+      </div>
+    </div>
+
+    <div class="hero-scroll" onclick="document.getElementById('intro').scrollIntoView({behavior:'smooth'})">
+      <div class="scroll-line"></div>
+      <span>Читать</span>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="hero-right-inner">
+      <svg class="brain-visual" viewBox="0 0 360 360" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="180" cy="180" r="155" stroke="rgba(232,168,56,0.07)" stroke-width="1"/>
+        <circle cx="180" cy="180" r="125" stroke="rgba(232,168,56,0.09)" stroke-width="1"/>
+        <circle cx="180" cy="180" r="95"  stroke="rgba(232,168,56,0.07)" stroke-width="1"/>
+        <line x1="25"  y1="180" x2="335" y2="180" stroke="rgba(232,168,56,0.05)" stroke-width="1"/>
+        <line x1="180" y1="25"  x2="180" y2="335" stroke="rgba(232,168,56,0.05)" stroke-width="1"/>
+
+        <path d="M180 72C148 70 120 86 112 112C100 112 88 122 88 136C82 140 78 148 80 158C72 164 68 176 72 188C68 198 72 210 82 216C86 230 98 240 114 242C124 256 140 264 158 264C168 272 174 276 180 276C186 276 192 272 202 264C220 264 236 256 246 242C262 240 274 230 278 216C288 210 292 198 288 188C292 176 288 164 280 158C282 148 278 140 272 136C272 122 260 112 248 112C240 86 212 70 180 72Z"
+          fill="rgba(232,168,56,0.05)" stroke="rgba(232,168,56,0.28)" stroke-width="1.2"/>
+
+        <path d="M160 110C152 126 150 142 154 158" stroke="rgba(232,168,56,0.18)" stroke-width="1" stroke-linecap="round" fill="none"/>
+        <path d="M180 100C176 116 174 134 178 150" stroke="rgba(232,168,56,0.18)" stroke-width="1" stroke-linecap="round" fill="none"/>
+        <path d="M200 110C206 126 208 142 204 158" stroke="rgba(232,168,56,0.18)" stroke-width="1" stroke-linecap="round" fill="none"/>
+        <path d="M130 160C140 166 150 164 160 158" stroke="rgba(232,168,56,0.13)" stroke-width="1" fill="none"/>
+        <path d="M200 158C210 164 220 166 230 160" stroke="rgba(232,168,56,0.13)" stroke-width="1" fill="none"/>
+        <path d="M118 190C130 182 146 180 160 186" stroke="rgba(232,168,56,0.13)" stroke-width="1" fill="none"/>
+        <path d="M200 186C214 180 230 182 242 190" stroke="rgba(232,168,56,0.13)" stroke-width="1" fill="none"/>
+        <path d="M142 220C154 214 168 212 180 216" stroke="rgba(232,168,56,0.1)" stroke-width="1" fill="none"/>
+        <path d="M180 216C192 212 206 214 218 220" stroke="rgba(232,168,56,0.1)" stroke-width="1" fill="none"/>
+        <path d="M180 90C178 110 176 142 178 182C180 222 180 250 180 270" stroke="rgba(232,168,56,0.08)" stroke-width="1" fill="none" stroke-dasharray="3 4"/>
+
+        <!-- Nodes — amber top, sage mid, coral bottom -->
+        <circle cx="160" cy="134" r="5.5" fill="#e8a838" opacity="0.95"/>
+        <circle cx="180" cy="122" r="4"   fill="#e8a838" opacity="0.75"/>
+        <circle cx="200" cy="134" r="5.5" fill="#e8a838" opacity="0.95"/>
+        <circle cx="144" cy="174" r="4"   fill="#c8d460" opacity="0.75"/>
+        <circle cx="216" cy="174" r="4"   fill="#c8d460" opacity="0.75"/>
+        <circle cx="162" cy="202" r="4.5" fill="#8ab878" opacity="0.85"/>
+        <circle cx="198" cy="202" r="4.5" fill="#8ab878" opacity="0.85"/>
+        <circle cx="180" cy="230" r="3.5" fill="#d4583c" opacity="0.8"/>
+
+        <circle cx="160" cy="134" r="11" fill="none" stroke="#e8a838" stroke-width="0.6" opacity="0.3"/>
+        <circle cx="200" cy="134" r="11" fill="none" stroke="#e8a838" stroke-width="0.6" opacity="0.3"/>
+
+        <line x1="160" y1="134" x2="180" y2="122" stroke="#e8a838" stroke-width="0.9" opacity="0.45"/>
+        <line x1="180" y1="122" x2="200" y2="134" stroke="#e8a838" stroke-width="0.9" opacity="0.45"/>
+        <line x1="160" y1="134" x2="144" y2="174" stroke="#c8d460" stroke-width="0.8" opacity="0.35"/>
+        <line x1="200" y1="134" x2="216" y2="174" stroke="#c8d460" stroke-width="0.8" opacity="0.35"/>
+        <line x1="144" y1="174" x2="162" y2="202" stroke="#8ab878" stroke-width="0.8" opacity="0.4"/>
+        <line x1="216" y1="174" x2="198" y2="202" stroke="#8ab878" stroke-width="0.8" opacity="0.4"/>
+        <line x1="162" y1="202" x2="180" y2="230" stroke="#d4583c" stroke-width="0.8" opacity="0.35"/>
+        <line x1="198" y1="202" x2="180" y2="230" stroke="#d4583c" stroke-width="0.8" opacity="0.35"/>
+
+        <text x="110" y="162" fill="rgba(232,168,56,0.45)" font-size="10" font-family="DM Mono" text-anchor="middle">7–10</text>
+        <text x="180" y="98"  fill="rgba(232,168,56,0.45)" font-size="10" font-family="DM Mono" text-anchor="middle">10–12</text>
+        <text x="250" y="162" fill="rgba(232,168,56,0.45)" font-size="10" font-family="DM Mono" text-anchor="middle">12–14</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- TICKER -->
+<div class="ticker-wrap">
+  <div class="ticker">
+    <span class="ticker-item">Синаптический прунинг</span>
+    <span class="ticker-item">Миелинизация</span>
+    <span class="ticker-item">Нейрогенез</span>
+    <span class="ticker-item">Префронтальная кора</span>
+    <span class="ticker-item">Сенситивные периоды</span>
+    <span class="ticker-item">Дофаминовая система</span>
+    <span class="ticker-item">ABCD Study · 11 000 детей</span>
+    <span class="ticker-item">Гиппокамп</span>
+    <span class="ticker-item">Эмоциональная регуляция</span>
+    <span class="ticker-item">Нейропластичность</span>
+    <span class="ticker-item">Синаптический прунинг</span>
+    <span class="ticker-item">Миелинизация</span>
+    <span class="ticker-item">Нейрогенез</span>
+    <span class="ticker-item">Префронтальная кора</span>
+    <span class="ticker-item">Сенситивные периоды</span>
+    <span class="ticker-item">Дофаминовая система</span>
+    <span class="ticker-item">ABCD Study · 11 000 детей</span>
+    <span class="ticker-item">Гиппокамп</span>
+    <span class="ticker-item">Эмоциональная регуляция</span>
+    <span class="ticker-item">Нейропластичность</span>
+  </div>
+</div>
+
+<!-- INTRO BAND -->
+<section class="intro-band" id="intro">
+  <div class="intro-band-inner">
+    <p class="big-quote">Мозг ребёнка — не сосуд, который наполняется. Это архитектура, которая строится из того опыта, который ребёнок получает каждый день.</p>
+  </div>
+</section>
+
+<!-- INTRO TEXT -->
+<section class="section">
+  <div class="container">
+    <div class="reveal">
+      <p class="sec-label">Введение</p>
+      <h2 class="section-title">Мозг от 7 до 14 лет — самая большая и важная стройка в теле ребёнка</h2>
+      <p class="lead">У вашего ребёнка есть биологическое расписание — не то, что вы составили в ежедневнике, а то, которое эволюция писала миллионы лет.</p>
+      <p class="body-text">В нём есть периоды, когда мозг ждёт определённого опыта. Учится быстрее, глубже и с меньшими усилиями, чем в любое другое время. Нейробиологи называют их <strong>сенситивными периодами</strong>.</p>
+      <p class="body-text">Это не история про «сейчас или никогда». Скорее так: то, что сейчас даётся ребёнку легко, позже потребует в разы больше усилий.</p>
+      <p class="body-text"><strong>Синаптический прунинг.</strong> Мозг удаляет связи, которые не используются. Те, что простаивают, демонтируются — мозг не тратит ресурсы на то, что не востребовано. <strong>Миелинизация.</strong> Активно используемые пути покрываются оболочкой, ускоряя передачу сигнала в 100 раз. Грунтовая дорога превращается в скоростную трассу.</p>
+    </div>
+    <div class="reveal callout">
+      <div class="callout-label">// ключевое понятие</div>
+      <p>Сенситивный период — временное окно, когда мозг ребёнка особенно восприимчив к определённому виду опыта. Нейронные связи формируются быстрее, прочнее и с меньшими усилиями. После закрытия окна обучение возможно, но требует значительно больше времени и сил.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PERIOD 1 -->
+<section class="section" id="age1" style="padding-top:0">
+  <div class="container">
+    <div class="reveal period-block">
+      <div class="period-header" data-num="01">
+        <div class="period-age">Первый период · 7–10 лет</div>
+        <div class="period-title">Фундамент: логика, язык и эмоции</div>
+        <div class="period-sub">Период, когда закладываются базовые когнитивные инструменты</div>
+      </div>
+      <div class="brain-status">
+        <div class="status-item">
+          <div class="status-label">Префронтальная кора</div>
+          <div class="status-bar"><div class="status-fill a" style="width:0%" data-w="35%"></div></div>
+          <div class="status-val">Начало миелинизации</div>
+        </div>
+        <div class="status-item">
+          <div class="status-label">Речевые центры</div>
+          <div class="status-bar"><div class="status-fill s" style="width:0%" data-w="90%"></div></div>
+          <div class="status-val">Пик восприимчивости</div>
+        </div>
+        <div class="status-item">
+          <div class="status-label">Лимбическая система</div>
+          <div class="status-bar"><div class="status-fill c" style="width:0%" data-w="70%"></div></div>
+          <div class="status-val">Высокая пластичность</div>
+        </div>
+      </div>
+      <div class="period-body">
+        <p class="body-text">Речевые центры находятся на пике восприимчивости к новым языкам: именно поэтому дети в этом возрасте подхватывают иностранный язык почти без усилий, тогда как взрослым для того же результата нужны годы работы. Лимбическая система, наш эмоциональный мозг, особенно пластична и хорошо запоминает паттерны эмоционального реагирования.</p>
+
+        <div class="sub-heading">Что важно развивать</div>
+
+        <div class="develop-item">
+          <div class="develop-title">Читательские навыки и языковое мышление</div>
+          <p class="develop-body">Настоящее чтение — это способность удерживать нить длинного текста, выстраивать причинно-следственные связи, понимать, что стоит за словами. Это закладывает нейронную инфраструктуру для всего последующего обучения. Её потом очень сложно построить заново.</p>
+          <div class="action-box"><strong>Что делать:</strong> читайте вместе вслух, даже если ребёнок уже умеет читать сам. Обсуждайте прочитанное. Почему герой так поступил? А ты бы как? Это звучит просто, но нейробиологически это очень мощная практика — одновременно тренируется языковая сеть, логика и эмоциональное понимание.</div>
+        </div>
+
+        <div class="develop-item">
+          <div class="develop-title">Математическое и логическое мышление</div>
+          <p class="develop-body">В 7–10 лет мозг особенно хорошо осваивает абстрактное мышление. Переход от конкретного к абстрактному, от трёх яблок к «пусть x равно» — это именно то, что происходит в этом возрасте при правильной среде.</p>
+          <div class="action-box"><strong>Что делать:</strong> настольные игры со стратегией, головоломки, шахматы. Не репетиторы по математике, а игровой опыт рассуждения. Мозг учится через удовольствие. И в этом ключ нейробиологии.</div>
+        </div>
+
+        <div class="develop-item">
+          <div class="develop-title">Эмоциональный интеллект</div>
+          <p class="develop-body">Паттерны эмоционального реагирования, которые формируются сейчас, со временем станут автоматическими реакциями взрослого человека. То, как ребёнок в 8 лет учится справляться с тревогой или злостью, напрямую влияет на то, как он будет делать это в 30. В этот момент формируется нейронная прошивка.</p>
+          <div class="action-box"><strong>Что делать?</strong> Называть эмоции вслух. Вместо «успокойся» скажите «я вижу, что ты злишься, расскажи мне». Дети, чьи родители регулярно называют эмоции, развивают более богатую нейронную сеть эмоционального распознавания. Это доказано исследованиями.</div>
+        </div>
+
+        <div class="practice-box">
+          <div class="practice-label">// практика недели</div>
+          <p>20 минут в день: читаете вместе одну главу, потом пять минут разговора. Один вопрос про чувства персонажа, один про логику поступка. Звучит скромно — но это одновременно развивает языковые нейронные сети, логическое мышление и эмоциональный интеллект. Три сенситивных периода, одна практика.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PERIOD 2 -->
+<section class="section" id="age2" style="padding-top:0">
+  <div class="container">
+    <div class="reveal period-block">
+      <div class="period-header" data-num="02">
+        <div class="period-age">Второй период · 10–12 лет</div>
+        <div class="period-title">Переход: социальный мозг просыпается</div>
+        <div class="period-sub">Критический период для социального интеллекта и самооценки</div>
+      </div>
+      <div class="brain-status">
+        <div class="status-item">
+          <div class="status-label">Медиальная ПФК</div>
+          <div class="status-bar"><div class="status-fill a" style="width:0%" data-w="55%"></div></div>
+          <div class="status-val">Активация</div>
+        </div>
+        <div class="status-item">
+          <div class="status-label">Дофаминовая система</div>
+          <div class="status-bar"><div class="status-fill c" style="width:0%" data-w="85%"></div></div>
+          <div class="status-val">Высокая чувствительность</div>
+        </div>
+        <div class="status-item">
+          <div class="status-label">Социальное познание</div>
+          <div class="status-bar"><div class="status-fill s" style="width:0%" data-w="72%"></div></div>
+          <div class="status-val">Пик пластичности</div>
+        </div>
+      </div>
+      <div class="period-body">
+        <p class="body-text">Мозг становится остро чувствительным к социальному положению, к принятию и отвержению. Это не подростковая капризность. Социальная боль в этом возрасте активирует те же области мозга, что и физическая боль. Именно поэтому насмешка от одноклассника в 11 лет ощущается как что-то физически болезненное — потому что для мозга это так и есть.</p>
+
+        <div class="sub-heading">Что важно развивать</div>
+
+        <div class="develop-item">
+          <div class="develop-title">Живые социальные навыки</div>
+          <p class="develop-body">Дружба, конфликты, переговоры, командная работа — всё это тренирует социальные нейронные сети в период их максимальной пластичности. Цифровое общение этого не заменяет. Мозгу нужны интонации, мимика, паузы, живая реакция другого человека. В переписке этого нет.</p>
+          <div class="action-box"><strong>Что делать:</strong> поддерживайте живые встречи со сверстниками. Не управляйте ими, просто создайте пространство. Дайте детям решать конфликты самим — это тренировка, а не провал воспитания.</div>
+        </div>
+
+        <div class="develop-item">
+          <div class="develop-title">Здоровая самооценка через мастерство</div>
+          <p class="develop-body">Источник здоровой самооценки — не похвала. Не «ты такой умный». А ощущение компетентности: я умею делать это хорошо. Нейробиологически это принципиально разные вещи. Похвала даёт дофаминовый всплеск, короткий и ненадёжный. Мастерство формирует устойчивые нейронные сети самоэффективности, которые работают долго.</p>
+          <div class="action-box"><strong>Что делать:</strong> помогите найти одну область, где ребёнок может становиться лучше через практику. Спорт, музыка, рисование, программирование. Неважно что. Важен опыт: стараюсь и получается лучше.</div>
+        </div>
+
+        <div class="develop-item">
+          <div class="develop-title">Управление вниманием — желательно до того, как соцсети сделают это за вас</div>
+          <p class="develop-body">В 7–12 лет многие дети получают первый смартфон. Именно в этот момент дофаминовая система мозга особенно чувствительна к вариабельному подкреплению. Это механизм, на котором построены все соцсети: никогда не знаешь, что увидишь, когда откроешь ленту. Именно эта непредсказуемость и затягивает — мозг снова и снова ищет награду.</p>
+          <p class="develop-body">Префронтальная кора, которая должна говорить «стоп», ещё не созрела. Газ есть, тормозов нет.</p>
+          <div class="action-box"><strong>Что делать?</strong> Дайте структуру вместо запрета. Договоритесь о правилах заранее. Телефон до 18:00 в общей зоне работает лучше, чем ежедневная война. Объясните механизм — дети 10–12 лет способны понять нейробиологию зависимости, и это реально меняет их отношение к экрану.</div>
+        </div>
+
+        <div class="practice-box">
+          <div class="practice-label">// данные исследования</div>
+          <p>Не торопитесь давать смартфон. Каждый год без соцсетей в 10–12 лет — это год, когда социальный мозг развивается через живой опыт, а не через лайки. Исследование Джин Твендж на 500 000 подростков показало: те, кто получил смартфон позже, демонстрируют более высокий уровень психологического благополучия.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PERIOD 3 -->
+<section class="section" id="age3" style="padding-top:0">
+  <div class="container">
+    <div class="reveal period-block">
+      <div class="period-header" data-num="03">
+        <div class="period-age">Третий период · 12–14 лет</div>
+        <div class="period-title">Шторм и возможности</div>
+        <div class="period-sub">Подростковый мозг на пике перестройки</div>
+      </div>
+      <div class="brain-status">
+        <div class="status-item">
+          <div class="status-label">Прунинг (2-я волна)</div>
+          <div class="status-bar"><div class="status-fill c" style="width:0%" data-w="96%"></div></div>
+          <div class="status-val">Максимум</div>
+        </div>
+        <div class="status-item">
+          <div class="status-label">Лимбическая система</div>
+          <div class="status-bar"><div class="status-fill c" style="width:0%" data-w="100%"></div></div>
+          <div class="status-val">Полная мощность</div>
+        </div>
+        <div class="status-item">
+          <div class="status-label">Префронтальная кора</div>
+          <div class="status-bar"><div class="status-fill a" style="width:0%" data-w="42%"></div></div>
+          <div class="status-val">Ещё созревает</div>
+        </div>
+      </div>
+      <div class="period-body">
+        <div class="pull-quote">У подростка мощный газ и слабые тормоза. Это не дефект характера, а нейробиология. И это временно.</div>
+        <p class="body-text">При этом именно сейчас мозг особенно восприимчив к новому опыту, риску и исследованию. Это эволюционное преимущество: природа намеренно делает подростков смелее и любопытнее. Задача родителя — не заглушить эту энергию, а дать ей безопасные каналы.</p>
+
+        <div class="sub-heading">Что важно развивать</div>
+
+        <div class="develop-item">
+          <div class="develop-title">Саморегуляция через практику, а не через запреты</div>
+          <p class="develop-body">Префронтальная кора созревает через использование. Каждый раз, когда подросток сам принимает решение, сам справляется с трудностью, сам восстанавливается после неудачи, он тренирует нейронные цепи саморегуляции. Нельзя научиться держать равновесие, если тебя постоянно держат за руку.</p>
+          <div class="action-box"><strong>Что делать:</strong> давайте реальную ответственность с реальными последствиями. Не «я скажу тебе что делать», а «это твой выбор, ты проживёшь его последствия». Это не жестокость, а нейробиологически обоснованное воспитание.</div>
+        </div>
+
+        <div class="develop-item">
+          <div class="develop-title">Физическая активность — это не опция, это нейробиология</div>
+          <p class="develop-body">Регулярная нагрузка стимулирует нейрогенез в гиппокампе, снижает кортизол и увеличивает объём серого вещества в префронтальной коре. Переводим с научного: спорт буквально строит мозг подростка.</p>
+          <p class="develop-body">Данные крупнейшего американского исследования ABCD Study, в котором наблюдают более 11 000 детей, показывают прямую связь между физической активностью и академической успеваемостью, эмоциональной устойчивостью и объёмом префронтальной коры. Не косвенную, а прямую.</p>
+          <div class="action-box"><strong>Что делать:</strong> любая регулярная нагрузка три-четыре раза в неделю по 45 минут. Командные виды спорта добавляют социальное измерение. Неважно что — важна регулярность.</div>
+        </div>
+
+        <div class="develop-item">
+          <div class="develop-title">Глубокие интересы и состояние потока</div>
+          <p class="develop-body">Состояние потока — когда человек полностью погружён в деятельность и теряет счёт времени — нейробиологически противоположно скроллингу. Оно формирует нейронные пути глубокой концентрации, которые во взрослой жизни становятся основой профессионального мастерства.</p>
+          <p class="develop-body">Мозг, который регулярно входит в поток, развивает устойчивое внимание. Мозг, который проводит часы в соцсетях, специализируется на поверхностном переключении. Прунинг выберет то, что использовалось чаще.</p>
+          <div class="action-box"><strong>Что делать:</strong> помогите найти область, достаточно сложную, чтобы требовать усилий, и достаточно интересную, чтобы эти усилия были приятными.</div>
+        </div>
+
+        <div class="practice-box">
+          <div class="practice-label">// важно понимать</div>
+          <p>Конфликты, импульсивность и эмоциональность подростка — это не признаки плохого воспитания. Это предсказуемые проявления нейробиологической перестройки. Ваша задача — создать безопасную среду, в которой его мозг сможет завершить эту перестройку с максимальными ресурсами.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PILLARS -->
+<section class="pillars-section" id="pillars">
+  <div class="container pillars-inner">
+    <div class="reveal pillars-head">
+      <p class="sec-label">Протокол</p>
+      <h2>Четыре вещи, которые нужны мозгу в любом возрасте</h2>
+      <p>Независимо от возраста, есть четыре вида опыта, без которых развивающийся мозг недополучает критически важный строительный материал.</p>
+    </div>
+    <div class="reveal pillars-grid">
+      <div class="pillar-card">
+        <div class="pillar-num">// 01</div>
+        <div class="pillar-title">Живое общение</div>
+        <div class="pillar-dose">Ежедневно · без экранов</div>
+        <p class="pillar-text">Взгляд, голос, прикосновение, совместное присутствие. Единственный источник окситоцина и основа социального познания. Экран это не заменяет.</p>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-num">// 02</div>
+        <div class="pillar-title">Качественный сон</div>
+        <div class="pillar-dose">9–10 ч (7–12 лет) · 8–9 ч (подростки)</div>
+        <p class="pillar-text">В это время мозг консолидирует память и проводит ночную уборку — выводит токсины, накопившиеся за день. Недосыпание напрямую снижает объём гиппокампа.</p>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-num">// 03</div>
+        <div class="pillar-title">Физическая активность</div>
+        <div class="pillar-dose">3–4 раза в неделю · 45 мин</div>
+        <p class="pillar-text">Нейрогенез в гиппокампе, снижение кортизола, развитие префронтальной коры. Спорт делает всё это одновременно.</p>
+      </div>
+      <div class="pillar-card">
+        <div class="pillar-num">// 04</div>
+        <div class="pillar-title">Неструктурированное время</div>
+        <div class="pillar-dose">Ежедневно · без задач и экранов</div>
+        <p class="pillar-text">Время, когда ребёнок сам решает чем заниматься. Скука полезна — она активирует сеть пассивного режима, основу творческого мышления. Это правда, не шутка.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONCLUSION -->
+<section class="conclusion">
+  <div class="container">
+    <div class="reveal">
+      <p class="sec-label">Заключение</p>
+      <h2>Вместо заключения</h2>
+      <p>Если вы читаете это и думаете «мы уже многое упустили» — остановитесь на секунду.</p>
+      <p>Нейропластичность работает в обе стороны. Мозг, сформировавший паттерны клипового мышления, может перестроиться при изменении среды. Это потребует больше времени и усилий. Но это реально.</p>
+      <p>Самое важное, что можно сделать прямо сейчас: не оптимизировать каждый час ребёнка, а обеспечить ему четыре базовых вещи. Живое общение, сон, движение и свободное время. Остальное мозг сделает сам.</p>
+      <div class="final-quote">
+        <p><span>Среда формирует мозг.</span> Вы создаёте среду. Это и есть воспитание.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOURCES -->
+<section class="sources">
+  <div class="container">
+    <div class="src-label">// научные источники</div>
+    <ul class="src-list">
+      <li>Blakemore S.J. & Choudhury S. (2006). Development of the adolescent brain. Journal of Child Psychology and Psychiatry.</li>
+      <li>Nelson C.A. et al. (2007). Cognitive recovery in socially deprived young children. Journal of Cognitive Neuroscience.</li>
+      <li>Twenge J.M. et al. (2018). Increases in depressive symptoms among US adolescents. Clinical Psychological Science.</li>
+      <li>Orben A. & Przybylski A.K. (2019). The association between adolescent well-being and digital technology use. Nature Human Behaviour.</li>
+      <li>Diamond A. (2013). Executive functions. Annual Review of Psychology.</li>
+      <li>ABCD Study — Adolescent Brain Cognitive Development, NIH, 2015–ongoing.</li>
+    </ul>
+  </div>
+</section>
+
+<script>
+// Nav
+const header = document.getElementById('siteHeader');
+window.addEventListener('scroll', () => {
+  header.classList.toggle('scrolled', window.scrollY > 60);
+});
+
+// Reveal
+const reveals = document.querySelectorAll('.reveal');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), i * 70);
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.08 });
+reveals.forEach(el => observer.observe(el));
+
+// Status bars animate on scroll
+const fills = document.querySelectorAll('.status-fill[data-w]');
+const barObs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      setTimeout(() => {
+        e.target.style.width = e.target.getAttribute('data-w');
+      }, 300);
+      barObs.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.6 });
+fills.forEach(f => barObs.observe(f));
+</script>
+</body>
+</html>
